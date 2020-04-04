@@ -1,13 +1,10 @@
 package com.phinacio.pontointeligente.api.controllers;
 
-import com.phinacio.pontointeligente.api.dtos.EmpresaDto;
 import com.phinacio.pontointeligente.api.dtos.LancamentoDto;
-import com.phinacio.pontointeligente.api.entities.Empresa;
 import com.phinacio.pontointeligente.api.entities.Funcionario;
 import com.phinacio.pontointeligente.api.entities.Lancamento;
 import com.phinacio.pontointeligente.api.enums.TipoEnum;
 import com.phinacio.pontointeligente.api.response.Response;
-import com.phinacio.pontointeligente.api.service.EmpresaService;
 import com.phinacio.pontointeligente.api.service.FuncionarioService;
 import com.phinacio.pontointeligente.api.service.LancamentoService;
 import org.apache.commons.lang3.EnumUtils;
@@ -62,10 +59,10 @@ public class LancamentoController {
             @RequestParam(value = "ord", defaultValue = "id") String ord,
             @RequestParam(value = "dir", defaultValue = "DESC") String dir) {
         log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
-        Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
+        Response<Page<LancamentoDto>> response = new Response<>();
 
         //PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
-        PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Sort.by(dir));
+        PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Sort.by(ord));
         Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
         Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 
